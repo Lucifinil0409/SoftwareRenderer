@@ -17,7 +17,7 @@ LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 
 //WINMAIN////////////////////////////////////////////
-int WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hprevinstance,LPSTR lpcmdline,int ncmdshow) {
+4int WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hprevinstance,LPSTR lpcmdline,int ncmdshow) {
 	//设置窗口类
 	WNDCLASSEX winclass;//创建的窗口类
 	winclass.cbSize = sizeof(WNDCLASSEX);//该结构的大小
