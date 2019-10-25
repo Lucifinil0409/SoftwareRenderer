@@ -118,6 +118,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="device.h" />
     <ClInclude Include="Mat.h" />
     <ClInclude Include="Vec.h" />
   </ItemGroup>
