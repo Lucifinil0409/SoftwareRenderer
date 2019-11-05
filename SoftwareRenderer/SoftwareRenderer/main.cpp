@@ -1,12 +1,16 @@
 //include////////////////////////////////////////////
 #include<Windows.h>
 #include<iostream>
+#include"constant.h"
 #include"device.h"
+#include"Vertex.h"
+#include"Camera.h"
+#include"Shader.h"
 
 //constant////////////////////////////////////////////
 
 //function////////////////////////////////////////////
-void GameMain(HDC hdc);
+void GameMain(Device myDevice);
 
 //WINMAIN////////////////////////////////////////////
 int WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hprevinstance,LPSTR lpcmdline,int ncmdshow) {
@@ -29,16 +33,53 @@ int WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hprevinstance,LPSTR lpcmdline,i
 			DispatchMessage(&msg);
 		}//end if
 		//主游戏处理逻辑
-		GameMain(myDC.getHDC());
+		GameMain(myDC);
 	}//end while
 
 	//返回到windows操作系统
 	return(msg.wParam);	
 }//end WinMain
 
-void GameMain(HDC hdc) {
+void GameMain(Device myDevice) {
+
+	//相机参数
+	Vec3 cameraPos(0, 0, -1);
+	Vec3 cameraDir(0, 0, 0);
+	float cameraFov = 90;
+	float cameraNearZ = 10;
+	float cameraFarZ = 500;
+	Camera mainCamera(cameraPos, cameraDir, cameraFov, myDevice.getWidth(), myDevice.getHeight(), cameraNearZ, cameraFarZ);
+
+	//创建buffer
+	Buffer buffer(myDevice.getWidth(), myDevice.getHeight());
+	buffer.clearBuffer(Color{ 1.0f,1.0f,1.0f,1.0f });
+	
+	//立方体数据
+	float vertices[] = {
+		// pos					//normal			//color				//uv
+		-0.5f, -0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 0.0f, 1.0f,	0.0f, 0.0f, // bottom-left
+		0.5f, -0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 1.0f, 0.0f,	1.0f, 0.0f,  // bottom-right
+		0.5f, 0.5f, -0.5f,   0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f,  // top-right
+		0.5f, 0.5f, -0.5f,   0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f, // top-right
+		-0.5f, 0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 1.0f, 0.0f,	0.0f, 1.0f,  // top-left
+		-0.5f, -0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 0.0f, 1.0f,	0.0f, 0.0f,  // bottom-left	
+	};
+	VertexArray VAO;
+	VAO.setPosition(vertices, sizeof(vertices), 0, 3, 11);
+	VAO.setNormal(vertices, sizeof(vertices), 3, 3, 11);
+	VAO.setColor(vertices, sizeof(vertices), 6, 3, 11);
+	VAO.setTexCoords(vertices, sizeof(vertices), 9, 2, 11);
+
+	//立方体顶点变换
+	std::vector<Vec4> newPosition;
+
+
 	for (int x = 10; x < 200; x++) {
-		SetPixel(hdc, x, 10, (1.0, 1.0, 1.0));
+		//SetPixel(myDevice.getHDC(), x, 10, (1.0, 1.0, 1.0));
+		drawPoint(buffer, Coord{ x,10 }, Color{ 0.0f,0.0f,0.0f,1.0f });
 	}
+
+
+	myDevice.draw(buffer);
 	return;
 }

@@ -4,12 +4,9 @@
 #define DEVICE
 
 #include<Windows.h>
+#include"Buffer.h"
+#include"constant.h"
 
-//window constant////////////////////////////////////////////
-#define WINDOW_CLASS_NAME "WIN3DCLASS"	//窗口类名
-#define WINDOW_TITLE "SoftwareRenderer"	//窗口标题
-#define WINDOW_WIDTH 800	//默认值
-#define WINDOW_HEIGHT 600	//默认值
 
 //function////////////////////////////////////////////
 LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
@@ -88,8 +85,30 @@ public:
 	HWND getHWND() { return hwnd; }
 	HINSTANCE getHINSTANCE() { return hinstance; }
 	WNDCLASSEX getWNDCLASSEX() { return winclass; }
+	int getWidth() { return width; }
+	int getHeight() { return height; }
 
-	void drawWindow();
+	void draw(const Buffer &buffer) {//////////////////////////////////////////////////////////
+		COLORREF *arr = new COLORREF[buffer.viewportWidth * buffer.viewportHeight];
+		Color* c;
+		for (int y = 0; y < buffer.viewportHeight; ++y) {
+			int offset_y = (buffer.viewportHeight - 1 - y) * buffer.viewportWidth;
+			int offset_y1 = y * buffer.viewportWidth;
+			for (int x = 0; x < buffer.viewportWidth; ++x) {
+				c = buffer.ptr + offset_y + x;
+
+				*(arr + offset_y1 + x) = RGB(int(c->B), int(c->G), int(c->R));
+			}
+
+		}
+		HBITMAP map = CreateBitmap(buffer.viewportWidth, buffer.viewportHeight, 1, 4 * 8, (void*)arr);
+		HDC src = CreateCompatibleDC(hdc);
+		SelectObject(src, map);
+		BitBlt(hdc, 0, 0, buffer.viewportWidth, buffer.viewportHeight, src, 0, 0, SRCCOPY);
+		DeleteObject(map);
+		DeleteDC(src);
+		delete[] arr;
+	}
 
 };
 

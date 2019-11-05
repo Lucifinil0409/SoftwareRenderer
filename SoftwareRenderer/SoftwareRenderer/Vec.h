@@ -1,8 +1,9 @@
 #pragma once
-#include<math.h>
+
 
 #ifndef VEC2
 #define VEC2
+
 class Vec2
 {
 private:
@@ -91,6 +92,7 @@ inline float cross(const Vec2 &vec1, const Vec2 &vec2) { return (vec1.x * vec2.y
 
 #ifndef VEC3
 #define VEC3
+
 class Vec3
 {
 private:
@@ -194,6 +196,7 @@ inline Vec3 cross(const Vec3 &vec1, const Vec3 &vec2) {
 
 #ifndef VEC4
 #define VEC4
+
 class Vec4
 {
 private:

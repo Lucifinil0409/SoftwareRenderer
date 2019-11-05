@@ -1,12 +1,12 @@
 #pragma once
-#include<math.h>
-#include<vector>
-#include"Vec.h"
-
-#define MY_PI 3.1415926
 
 #ifndef MAT3X3
 #define MAT3X3
+
+#include<vector>
+#include"Vec.h"
+#include"constant.h"
+
 class Mat3x3 {
 private:
 	static int Mat3x3Width;
@@ -129,7 +129,7 @@ public:
 		LUdecomposition(matL, matU);
 		Mat3x3 matUinverse = Uinverse(matU);
 		Mat3x3 matLinverse = Linverse(matL);
-		return Mat3x3(matUinverse * matLinverse);
+		return (matUinverse * matLinverse);
 	}
 
 };
@@ -192,6 +192,11 @@ inline Mat3x3 operator*(float value, Mat3x3 mat1) {
 
 #ifndef MAT4X4
 #define MAT4X4
+
+#include<vector>
+#include"Vec.h"
+#include"constant.h"
+
 class Mat4x4 {
 private:
 	static int Mat4x4Width;
@@ -306,7 +311,7 @@ public:
 		LUdecomposition(matL, matU);
 		Mat4x4 matUinverse = Uinverse(matU);
 		Mat4x4 matLinverse = Linverse(matL);
-		return Mat4x4(matUinverse * matLinverse);
+		return (matUinverse * matLinverse);
 	}	
 
 };
