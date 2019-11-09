@@ -8,7 +8,7 @@
 #define MY_PI 3.1415926
 
 struct Color {
-	float R, G, B, A;
+	float R, G, B;
 };
 
 struct Coord {

@@ -60,7 +60,7 @@ public:
 		viewportHeight = height;
 		
 	}
-	~Camera();
+	~Camera(){}
 
 	void UpdateCamera() {
 

@@ -22,7 +22,7 @@ public:
 	std::vector<Vec3> Bitangent;
 
 	VertexArray() = default;
-	~VertexArray();
+	~VertexArray(){}
 
 
 	void setPosition(float* dataPtr, int dataSize, int startPos, int vectorDimension, int step) {
@@ -46,7 +46,7 @@ private:
 			for (int j = 0; j < vectorDimension; j++) {
 				dataPart[i][j] = dataPtr[startPos + i * step + j];
 			}
-			for (int j = vectorDimension; j < T.size(); j++) {
+			for (int j = vectorDimension; j < dataPart[i].size(); j++) {
 				dataPart[i][j] = 1.0f;
 			}
 		}

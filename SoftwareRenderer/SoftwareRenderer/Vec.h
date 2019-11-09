@@ -18,6 +18,11 @@ public:
 	Vec2(const Vec2 &src) : x(src.x), y(src.y) {};
 	~Vec2() {}
 
+	float& operator[](int i) {
+		if (i == 0) { return x; }
+		else if (i == 1) { return y; }
+	}
+
 	float getU() { return x; }
 	float getV() { return y; }
 	void setU(float u) { x = u; }
@@ -93,6 +98,8 @@ inline float cross(const Vec2 &vec1, const Vec2 &vec2) { return (vec1.x * vec2.y
 #ifndef VEC3
 #define VEC3
 
+#include"Vec.h"
+
 class Vec3
 {
 private:
@@ -105,9 +112,16 @@ public:
 	Vec3() = default;
 	Vec3(float a) : x(a), y(a),z(a) {};
 	Vec3(float a, float b, float c) : x(a), y(b), z(c) {};
-	Vec3(const Vec3 &src) : x(src.x), y(src.y), z(src.z) {};
-	Vec3(const Vec4 &src) : x(src.x), y(src.y), z(src.z) {};
+	//Vec3(const Vec3 &src) : x(src.x), y(src.y), z(src.z) {};
+	//Vec3(const Vec4 &src) : x(src.x), y(src.y), z(src.z) {};
+
 	~Vec3() {}
+
+	float& operator[](int i) {
+		if (i == 0) { return x; }
+		else if (i == 1) { return y; }
+		else if (i == 2) { return z; }
+	}
 
 	float getR() { return x; }
 	float getG() { return y; }
@@ -157,9 +171,9 @@ public:
 		}
 	}
 
-	Vec4 toVec4() const {
+	/*Vec4 toVec4() const {
 		return Vec4(this);
-	}
+	}*/
 };
 
 int Vec3::vec3Size = 3;
@@ -214,6 +228,13 @@ public:
 	Vec4(const Vec4 &src) : x(src.x), y(src.y), z(src.z), w(src.w) {};
 	~Vec4() {}
 
+	float& operator[](int i) {
+		if (i == 0) { return x; }
+		else if (i == 1) { return y; }
+		else if (i == 2) { return z; }
+		else if (i == 3) { return w; }
+	}
+
 	float getR() const { return x; }
 	float getG() const { return y; }
 	float getB() const { return z; }
@@ -264,9 +285,9 @@ public:
 		
 	}
 
-	Vec3 toVec3() const {
+	/*Vec3 toVec3() const {
 		return Vec3(this);
-	}
+	}*/
 };
 
 int Vec4::vec4Size = 4;

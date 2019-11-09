@@ -1,12 +1,11 @@
 #pragma once
 
-#ifndef DEVICE
-#define DEVICE
-
 #include<Windows.h>
 #include"Buffer.h"
 #include"constant.h"
 
+#ifndef DEVICE
+#define DEVICE
 
 //function////////////////////////////////////////////
 LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
@@ -57,7 +56,7 @@ private:
 			return 0;
 		}
 
-		return(1);
+		return 1;
 	}
 
 	void releaseWindow() {
@@ -91,13 +90,14 @@ public:
 	void draw(const Buffer &buffer) {//////////////////////////////////////////////////////////
 		COLORREF *arr = new COLORREF[buffer.viewportWidth * buffer.viewportHeight];
 		Color* c;
-		for (int y = 0; y < buffer.viewportHeight; ++y) {
-			int offset_y = (buffer.viewportHeight - 1 - y) * buffer.viewportWidth;
-			int offset_y1 = y * buffer.viewportWidth;
-			for (int x = 0; x < buffer.viewportWidth; ++x) {
-				c = buffer.ptr + offset_y + x;
+		for (int y = 0; y < buffer.viewportHeight; y++) {
+			//·­×ªyÖá×ø±ê,ÆÁÄ»×óÉÏ½ÇÎª0£¬0
+			int offsetY = y * buffer.viewportWidth;
 
-				*(arr + offset_y1 + x) = RGB(int(c->B), int(c->G), int(c->R));
+			for (int x = 0; x < buffer.viewportWidth; x++) {
+				c = buffer.ptr + offsetY + x;
+
+				*(arr + offsetY + x) = RGB(int(c->B), int(c->G), int(c->R));
 			}
 
 		}

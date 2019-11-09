@@ -11,17 +11,18 @@ public:
 	int viewportWidth, viewportHeight;
 	Color *ptr = NULL;
 
-	Color operator[](int loc) const {
-		return ptr[loc];
-	}
 	Color& operator[](int loc) {
 		return ptr[loc];
 	}
+	Color operator[](int loc) const {
+		return ptr[loc];
+	}
+	
 
 	Buffer() = default;
 	Buffer(int width, int height) {
 		viewportWidth = width;
-		viewportWidth = height;
+		viewportHeight = height;
 		try {
 			ptr = new Color[width*height];
 		}
@@ -31,13 +32,13 @@ public:
 		}
 
 		if (ptr) {
-			Color defaultColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+			Color defaultColor = { 0.0f, 0.0f, 0.0f};
 			std::fill(ptr, ptr + viewportWidth * viewportHeight, defaultColor);
 
 		}
 	}
 	~Buffer() {
-		Color defaultColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+		Color defaultColor = { 0.0f, 0.0f, 0.0f};
 		std::fill(ptr, ptr + viewportWidth * viewportHeight, defaultColor);
 		delete[] ptr;
 		ptr = NULL;
@@ -58,7 +59,7 @@ public:
 		}
 
 		if (ptr) {
-			Color defaultColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+			Color defaultColor = { 0.0f, 0.0f, 0.0f };
 			std::fill(ptr, ptr + viewportWidth * viewportHeight, defaultColor);
 			delete[] temp;
 			temp = NULL;

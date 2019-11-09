@@ -1,11 +1,13 @@
 #pragma once
 
-#ifndef MAT3X3
-#define MAT3X3
-
 #include<vector>
 #include"Vec.h"
 #include"constant.h"
+
+
+#ifndef MAT3X3
+#define MAT3X3
+
 
 class Mat3x3 {
 private:
@@ -28,7 +30,7 @@ public:
 			}
 		}
 	}
-	~Mat3x3();
+	~Mat3x3(){}
 
 	static int width() { return Mat3x3Width; }
 
@@ -46,9 +48,10 @@ public:
 				this->a[i][j] = value.a[i][j];
 			}
 		}
+		return *this;
 	}
 
-	Mat4x4 toMat4x4() const {
+	/*Mat4x4 toMat4x4() const {
 		Mat4x4 tempMat(0.0f);
 		for (int i = 0; i < Mat3x3Width; i++) {
 			for (int j = 0; j < Mat3x3Width; j++) {
@@ -57,7 +60,7 @@ public:
 		}
 		tempMat.a[3][3] = 1.0f;
 		return tempMat;
-	}
+	}*/
 
 	Mat3x3 transpose() const {
 		Mat3x3 tempMat(0.0f);
@@ -129,7 +132,19 @@ public:
 		LUdecomposition(matL, matU);
 		Mat3x3 matUinverse = Uinverse(matU);
 		Mat3x3 matLinverse = Linverse(matL);
-		return (matUinverse * matLinverse);
+		return matMulti(matUinverse, matLinverse);
+	}
+
+	Mat3x3 matMulti(Mat3x3 mat1, Mat3x3 mat2) {
+		Mat3x3 tempMat(0.0f);
+		for (int i = 0; i < Mat3x3::width(); i++) {
+			for (int j = 0; j < Mat3x3::width(); j++) {
+				for (int k = 0; k < Mat3x3::width(); k++) {
+					tempMat.a[i][j] = tempMat.a[i][j] + mat1.a[i][k] * mat2.a[k][j];
+				}
+			}
+		}
+		return tempMat;
 	}
 
 };
@@ -186,6 +201,9 @@ inline Mat3x3 operator*(float value, Mat3x3 mat1) {
 	return operator*(mat1, value);
 }
 
+
+
+
 #endif//endif MAT3X3
 
 
@@ -218,7 +236,7 @@ public:
 			}
 		}
 	}
-	~Mat4x4();
+	~Mat4x4(){}
 
 	static int width() { return Mat4x4Width; }
 
@@ -311,8 +329,20 @@ public:
 		LUdecomposition(matL, matU);
 		Mat4x4 matUinverse = Uinverse(matU);
 		Mat4x4 matLinverse = Linverse(matL);
-		return (matUinverse * matLinverse);
+		return matMulti(matUinverse, matLinverse);
 	}	
+
+	Mat4x4 matMulti(Mat4x4 mat1, Mat4x4 mat2) {
+		Mat4x4 tempMat(0.0f);
+		for (int i = 0; i < Mat4x4::width(); i++) {
+			for (int j = 0; j < Mat4x4::width(); j++) {
+				for (int k = 0; k < Mat4x4::width(); k++) {
+					tempMat.a[i][j] = tempMat.a[i][j] + mat1.a[i][k] * mat2.a[k][j];
+				}
+			}
+		}
+		return tempMat;
+	}
 
 };
 
@@ -442,3 +472,5 @@ void applyTrans(Mat4x4 trans, std::vector<Vec4> &pointArray) {
 }
 
 #endif//endif MAT4X4
+
+
