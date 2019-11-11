@@ -69,6 +69,9 @@ void GameMain(Device myDevice) {
 	DepthBuffer depthBuffer(myDevice.getWidth(), myDevice.getHeight());
 	depthBuffer.clearBuffer(-2.0f);
 
+	//创建Shader
+	Shader myShader(&mainCamera, &buffer, &depthBuffer);
+
 	
 	char str[512];
 	if (first) {
@@ -79,32 +82,90 @@ void GameMain(Device myDevice) {
 	
 	
 	//立方体数据
+	//float vertices[] = {
+	//	// pos					//normal				//color					//uv
+	//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, -1.0f,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f,		// bottom-left
+	//	0.5f, -0.5f, -0.5f,		0.0f, 0.0f, -1.0f,		0.0f, 1.0f, 0.0f,		1.0f, 0.0f,		// bottom-right
+	//	0.5f, 0.5f, -0.5f,		0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f,		// top-right
+	//	0.5f, 0.5f, -0.5f,		0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f,		// top-right
+	//	-0.5f, 0.5f, -0.5f,		0.0f, 0.0f, -1.0f,		0.0f, 1.0f, 0.0f,		0.0f, 1.0f,		// top-left
+	//	-0.5f, -0.5f, -0.5f,	0.0f, 0.0f, -1.0f,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f,		// bottom-left	
+	//};
 	float vertices[] = {
-		// pos					//normal			//color				//uv
-		-0.5f, -0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 0.0f, 1.0f,	0.0f, 0.0f, // bottom-left
-		0.5f, -0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 1.0f, 0.0f,	1.0f, 0.0f,  // bottom-right
-		0.5f, 0.5f, -0.5f,   0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f,  // top-right
-		0.5f, 0.5f, -0.5f,   0.0f, 0.0f, -1.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f, // top-right
-		-0.5f, 0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 1.0f, 0.0f,	0.0f, 1.0f,  // top-left
-		-0.5f, -0.5f, -0.5f,   0.0f, 0.0f, -1.0f,	0.0f, 0.0f, 1.0f,	0.0f, 0.0f,  // bottom-left	
+		// positions          // normals			//color				// texture coords
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f
 	};
+
+	int VertexLength = 11;
+	int VertexSize = sizeof(vertices) / sizeof(float);
+	int pointAmount = VertexSize / VertexLength;
 	VertexArray VAO;
-	VAO.setPosition(vertices, sizeof(vertices), 0, 3, 11);
-	VAO.setNormal(vertices, sizeof(vertices), 3, 3, 11);
-	VAO.setColor(vertices, sizeof(vertices), 6, 3, 11);
-	VAO.setTexCoords(vertices, sizeof(vertices), 9, 2, 11);
+	VAO.setPosition(vertices, VertexSize, 0, 3, VertexLength);
+	VAO.setNormal(vertices, VertexSize, 3, 3, VertexLength);
+	VAO.setColor(vertices, VertexSize, 6, 3, VertexLength);
+	VAO.setTexCoords(vertices, VertexSize, 9, 2, VertexLength);
 
-	//立方体顶点变换
-	std::vector<Vec4> newPosition;
+	std::vector<int> indices(pointAmount);
+	for (int i = 0; i < pointAmount; i++) {
+		indices[i] = i;
+	}
+	VAO.setTBN(indices);
 
 
-	//drawLine(buffer, Coord{ 0,0 }, Coord{ 799,599 }, Color{ 0.0f,0.0f,0.0f });
-	//drawLine(buffer, Coord{ 0,0 }, Coord{ 599,599 }, Color{ 0.0f,0.0f,0.0f });
-	drawLine(buffer, Coord{ 200,200 }, Coord{ 400,400 }, Color{ 0.0f,0.0f,0.0f });
-	drawLine(buffer, Coord{ 100,500 }, Coord{ 500,100 }, Color{ 0.0f,0.0f,0.0f });
-	//drawLine(buffer, Coord{ 0,0 }, Coord{ 300,100 }, Color{ 0.0f,0.0f,0.0f });
-	//drawLine(buffer, Coord{ 10,50 }, Coord{ 10,300 }, Color{ 0.0f,0.0f,0.0f });
-	//drawLine(buffer, Coord{ 10,50 }, Coord{ 10,300 }, Color{ 0.0f,0.0f,0.0f });
+	//设置模型顶点变换矩阵（旋转-》缩放-》平移）
+	Mat4x4 transformMat = Mat4x4::unitMat();
+	transformMat = matRotate(transformMat, 45, Vec3(0.0f, 1.0f, 0.0f));
+	transformMat = matScale(transformMat, 1.0f);
+	transformMat = matTranslate(transformMat, Vec3(2.0f, 0.0f, 2.0f));
+
+	
+
+
+	//绘制图像到buffer
+	myShader.Draw(VAO, transformMat, LINE_MODE);
+
+	
+	
 
 
 	myDevice.draw(buffer);

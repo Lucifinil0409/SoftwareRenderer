@@ -468,8 +468,8 @@ void applyTrans(Mat4x4 trans, std::vector<Vec4> &pointArray) {
 	for (unsigned int i = 0; i < pointCount; i++) {
 		pointArray[i] = trans * pointArray[i];
 	}
-	return;
 }
+
 
 #endif//endif MAT4X4
 

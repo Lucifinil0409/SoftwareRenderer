@@ -7,6 +7,11 @@
 
 #define MY_PI 3.1415926
 
+enum DRAW_MODE{
+	LINE_MODE,
+	FILL_MODE
+};
+
 struct Color {
 	float R, G, B;
 };

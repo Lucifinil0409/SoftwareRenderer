@@ -113,7 +113,7 @@ public:
 	Vec3(float a) : x(a), y(a),z(a) {};
 	Vec3(float a, float b, float c) : x(a), y(b), z(c) {};
 	//Vec3(const Vec3 &src) : x(src.x), y(src.y), z(src.z) {};
-	//Vec3(const Vec4 &src) : x(src.x), y(src.y), z(src.z) {};
+	//Vec3(const Vec4 &src);
 
 	~Vec3() {}
 
@@ -222,10 +222,11 @@ public:
 	float w;
 
 	Vec4() = default;
-	Vec4(float a) : x(a), y(a), z(a), w(a) {};
-	Vec4(float a, float b, float c, float d = 0.0f) : x(a), y(b), z(c), w(d){};
-	Vec4(const Vec3 &src) : x(src.x), y(src.y), z(src.z), w(0.0f) {};
-	Vec4(const Vec4 &src) : x(src.x), y(src.y), z(src.z), w(src.w) {};
+	Vec4(float a) : x(a), y(a), z(a), w(a) {}
+	Vec4(float a, float b, float c, float d = 0.0f) : x(a), y(b), z(c), w(d){}
+	Vec4(const Vec3 &src) : x(src.x), y(src.y), z(src.z), w(0.0f) {}
+	Vec4(const Vec3 &src, const float wValue) : x(src.x), y(src.y), z(src.z), w(wValue) {}
+	Vec4(const Vec4 &src) : x(src.x), y(src.y), z(src.z), w(src.w) {}
 	~Vec4() {}
 
 	float& operator[](int i) {
@@ -285,9 +286,9 @@ public:
 		
 	}
 
-	/*Vec3 toVec3() const {
-		return Vec3(this);
-	}*/
+	Vec3 toVec3() const {
+		return Vec3(this->x,this->y,this->z);
+	}
 };
 
 int Vec4::vec4Size = 4;

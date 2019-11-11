@@ -85,6 +85,19 @@ public:
 
 		//´ýÐÞ¸Ä
 	}
+	Mat4x4 calScreenMatrix() {
+		Mat4x4 screenMat(0);
+		float alpha = (0.5f * viewportWidth - 0.5f);
+		float beta = (0.5f * viewportHeight - 0.5f);
+		screenMat.a[0][0] = alpha;
+		screenMat.a[1][1] = -beta;
+		screenMat.a[2][2] = 1.0f;
+		screenMat.a[3][3] = 1.0f;
+
+		screenMat.a[0][2] = alpha;
+		screenMat.a[1][2] = beta;
+		return screenMat;
+	}
 
 
 };
