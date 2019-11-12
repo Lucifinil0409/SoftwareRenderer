@@ -96,12 +96,12 @@ public:
 
 	DepthBuffer() {
 		viewportWidth = -1;
-		viewportWidth = -1;
+		viewportHeight = -1;
 		ptr = NULL;
 	}
 	DepthBuffer(int width, int height) {
 		viewportWidth = width;
-		viewportWidth = height;
+		viewportHeight = height;
 		try {
 			ptr = new float[width * height];
 		}
@@ -111,11 +111,11 @@ public:
 		}
 
 		if (ptr) {
-			std::fill(ptr, ptr + viewportWidth * viewportHeight, -2);
+			std::fill(ptr, ptr + viewportWidth * viewportHeight, 2.0f);
 		}
 	}
 	~DepthBuffer() {
-		std::fill(ptr, ptr + viewportWidth * viewportHeight, -2);
+		std::fill(ptr, ptr + viewportWidth * viewportHeight, 2.0f);
 		delete[] ptr;
 		ptr = NULL;
 	}
@@ -135,7 +135,7 @@ public:
 		}
 
 		if (ptr) {
-			std::fill(ptr, ptr + viewportWidth * viewportHeight, -2);
+			std::fill(ptr, ptr + viewportWidth * viewportHeight, 2.0f);
 			delete[] temp;
 			temp = NULL;
 			return true;

@@ -67,6 +67,9 @@ public:
 			return normVec2;
 		}	
 	}
+
+	static float dot(const Vec2 &vec1, const Vec2 &vec2) { return (vec1.x * vec2.x + vec1.y * vec2.y); }
+	static float cross(const Vec2 &vec1, const Vec2 &vec2) { return (vec1.x * vec2.y - vec1.y * vec2.x); }
 };
 
 int Vec2::vec2Size = 2;
@@ -88,9 +91,6 @@ inline Vec2 operator/(const Vec2 &vec, const float value) {
 		return Vec2(0.0f);
 	}
 }
-
-inline float dot(const Vec2 &vec1, const Vec2 &vec2) { return (vec1.x * vec2.x + vec1.y * vec2.y); }
-inline float cross(const Vec2 &vec1, const Vec2 &vec2) { return (vec1.x * vec2.y - vec1.y * vec2.x); }
 
 #endif//endif VEC2
 

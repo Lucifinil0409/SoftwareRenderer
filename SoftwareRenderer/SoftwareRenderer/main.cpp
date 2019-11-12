@@ -56,18 +56,18 @@ int WINAPI WinMain(HINSTANCE hinstance,HINSTANCE hprevinstance,LPSTR lpcmdline,i
 void GameMain(Device myDevice) {
 
 	//相机参数
-	Vec3 cameraPos(0, 0, -1);
+	Vec3 cameraPos(0, 0, -3);
 	Vec3 cameraDir(0, 0, 0);
 	float cameraFov = 90;
-	float cameraNearZ = 10;
-	float cameraFarZ = 500;
+	float cameraNearZ = 0.1f;
+	float cameraFarZ = 100.0f;
 	Camera mainCamera(cameraPos, cameraDir, cameraFov, myDevice.getWidth(), myDevice.getHeight(), cameraNearZ, cameraFarZ);
 
 	//创建buffer
 	Buffer buffer(myDevice.getWidth(), myDevice.getHeight());
 	buffer.clearBuffer(Color{ 255.0f,255.0f,255.0f });
 	DepthBuffer depthBuffer(myDevice.getWidth(), myDevice.getHeight());
-	depthBuffer.clearBuffer(-2.0f);
+	depthBuffer.clearBuffer(2.0f);
 
 	//创建Shader
 	Shader myShader(&mainCamera, &buffer, &depthBuffer);
@@ -93,47 +93,47 @@ void GameMain(Device myDevice) {
 	//};
 	float vertices[] = {
 		// positions          // normals			//color				// texture coords
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f, 1.0f,	0.0f,  0.0f,		//左下前
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, 0.0f,	1.0f,  0.0f,		//右下前
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,	1.0f,  1.0f,		//右上前
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,	1.0f,  1.0f,		//右上前
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f, 0.0f,	0.0f,  1.0f,		//左上前
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f, 1.0f,	0.0f,  0.0f,		//左下前
 
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,	0.0f,  0.0f,		//左下后
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, 1.0f,	1.0f,  0.0f,		//右下后
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,		//右上后
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,		//右上后
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,	0.0f,  1.0f,		//左上后
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,	0.0f,  0.0f,		//左下后
 
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f, 0.0f,	1.0f,  0.0f,		//左上后
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,	1.0f,  1.0f,		//左上前
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,	0.0f,  1.0f,		//左下前
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,	0.0f,  1.0f,		//左下前
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 0.0f,	0.0f,  0.0f,		//左下后
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f, 0.0f,	1.0f,  0.0f,		//左上后
 
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,		//右上后
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, 1.0f,	1.0f,  1.0f,		//右上前
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,	0.0f,  1.0f,		//右下前
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,	0.0f,  1.0f,		//右下前
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,	0.0f,  0.0f,		//右下后
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,		//右上后
 
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f, 1.0f,	0.0f,  1.0f,		//左下前
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, 0.0f,	1.0f,  1.0f,		//右下前
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, 1.0f,	1.0f,  0.0f,		//右下后
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, 1.0f,	1.0f,  0.0f,		//右下后
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,	0.0f,  0.0f,		//左下后
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f, 1.0f,	0.0f,  1.0f,		//左下前
 
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	0.0f,  1.0f
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, 0.0f,	0.0f,  1.0f,		//左上前
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,	1.0f,  1.0f,		//右上前
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,	1.0f,  0.0f,		//右上后
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,	1.0f,  0.0f,		//右上后
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,	0.0f,  0.0f,		//左上后
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, 0.0f,	0.0f,  1.0f			//左上前
 	};
 
 	int VertexLength = 11;
@@ -152,17 +152,16 @@ void GameMain(Device myDevice) {
 	VAO.setTBN(indices);
 
 
-	//设置模型顶点变换矩阵（旋转-》缩放-》平移）
+	//设置模型顶点变换矩阵（缩放-》旋转-》平移）!!!!!!!!!!
 	Mat4x4 transformMat = Mat4x4::unitMat();
-	transformMat = matRotate(transformMat, 45, Vec3(0.0f, 1.0f, 0.0f));
-	transformMat = matScale(transformMat, 1.0f);
-	transformMat = matTranslate(transformMat, Vec3(2.0f, 0.0f, 2.0f));
+	transformMat = matScale(transformMat, 2.0f);
+	transformMat = matRotate(transformMat, 45.0f, Vec3(0.0f, 1.0f, 0.0f));
+	transformMat = matTranslate(transformMat, Vec3(0.0f, 0.0f, 1.0f));
 
 	
-
-
 	//绘制图像到buffer
-	myShader.Draw(VAO, transformMat, LINE_MODE);
+	//myShader.Draw(VAO, transformMat, LINE_MODE);
+	myShader.Draw(VAO, transformMat, FILL_MODE);
 
 	
 	

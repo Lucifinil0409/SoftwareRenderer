@@ -15,10 +15,11 @@ public:
 	Vec3 U, V, N;
 	
 	float cameraFov;
-	float viewDistance;
 
-	float viewplaneWidth;
-	float viewplaneHeight;
+	//此时距离投影平面viewplane的距离d==1,且fov为垂直方向视野
+	float halfViewplaneHeight;
+	float halfViewplaneWidth;
+
 	float viewportWidth;
 	float viewportHeight;
 	float aspectRatio;
@@ -52,9 +53,9 @@ public:
 		nearClipZ = nearZ;
 		farClipZ = farZ;
 
-		viewplaneWidth = 2;
-		viewplaneHeight = 2 / aspectRatio;
-		viewDistance = 1 / tan(fov / 2 / 180 * MY_PI);
+		//此时距离投影平面viewplane的距离d==1
+		halfViewplaneHeight = tan((fov / 2) / 180 * MY_PI);
+		halfViewplaneWidth = halfViewplaneHeight * aspectRatio;
 
 		viewportWidth = width;
 		viewportHeight = height;
@@ -75,15 +76,15 @@ public:
 
 		return viewMat;
 	}
-	Mat4x4 calProjectionMatrix() {
+	Mat4x4 calPerspectiveMatrix() {
 		Mat4x4 projectMat(0);
-		projectMat.a[0][0] = viewDistance;
-		projectMat.a[1][1] = viewDistance * aspectRatio;
-		projectMat.a[2][2] = 1;
+		projectMat.a[0][0] = 1.0f / halfViewplaneWidth;
+		projectMat.a[1][1] = 1.0f / halfViewplaneHeight;
+		projectMat.a[2][2] = farClipZ / (farClipZ - nearClipZ);
+		projectMat.a[2][3] = -farClipZ * nearClipZ / (farClipZ - nearClipZ);
+
 		projectMat.a[3][2] = 1;
 		return projectMat;
-
-		//待修改
 	}
 	Mat4x4 calScreenMatrix() {
 		Mat4x4 screenMat(0);
