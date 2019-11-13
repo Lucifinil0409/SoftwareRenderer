@@ -3,6 +3,7 @@
 void OutputDebugPrintf(const char* strOutputString, ...);
 
 #include"constant.h"
+#include"Camera.h"
 #include"Buffer.h"
 
 void drawPoint(Buffer &targetBuffer, Coord point, Color pointColor) {

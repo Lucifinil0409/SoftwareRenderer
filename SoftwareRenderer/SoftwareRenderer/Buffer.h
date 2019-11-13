@@ -19,7 +19,7 @@ public:
 	}
 	
 
-	Buffer() = default;
+	Buffer() {}
 	Buffer(int width, int height) {
 		viewportWidth = width;
 		viewportHeight = height;

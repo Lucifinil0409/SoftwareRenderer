@@ -1,8 +1,8 @@
 #pragma once
 
 #include<Windows.h>
-#include"Buffer.h"
 #include"constant.h"
+#include"Buffer.h"
 
 #ifndef DEVICE
 #define DEVICE
@@ -59,10 +59,6 @@ private:
 		return 1;
 	}
 
-	void releaseWindow() {
-		ReleaseDC(hwnd, hdc);
-	}
-
 public:
 	Device();
 	Device(HINSTANCE hins,int newWidth = WINDOW_WIDTH, int newHeight = WINDOW_HEIGHT) {
@@ -78,6 +74,10 @@ public:
 	}
 	~Device() {
 		releaseWindow();
+	}
+
+	void releaseWindow() {
+		ReleaseDC(hwnd, hdc);
 	}
 
 	HDC getHDC() { return hdc; }
@@ -113,42 +113,77 @@ public:
 };
 
 
-//系统的主消息处理回调函数
-LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-	//系统主消息处理程序
-	PAINTSTRUCT ps;//用于WM_PAINT中
-	HDC hdc;//设备场景句柄
-
-	//消息判断
-	switch (msg) {
-	case WM_CREATE: {
-		//初始化代码
-			//成功返回
-		return(0);
-	}break;
-
-	case WM_PAINT: {
-		//验证窗口是否有效
-		hdc = BeginPaint(hwnd, &ps);
-		//绘制代码
-		EndPaint(hwnd, &ps);
-		//成功返回
-		return(0);
-	}break;
-
-	case WM_DESTROY: {
-		//关闭应用程序，这将返回一条WM_QUIT消息
-		PostQuitMessage(0);
-		//成功返回
-		return(0);
-	}break;
-
-	default: break;
-
-	}//end switch
-
-	//使用windows默认函数处理其他消息
-	return (DefWindowProc(hwnd, msg, wparam, lparam));
-}//end WinProc
+////系统的主消息处理回调函数
+//LRESULT CALLBACK WinProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+//	//系统主消息处理程序
+//	PAINTSTRUCT ps;//用于WM_PAINT中
+//	HDC hdc;//设备场景句柄
+//
+//	//消息判断
+//	switch (msg) {
+//	case WM_CREATE: {
+//		//初始化代码
+//		
+//		//成功返回
+//		return(0);
+//	}break;
+//
+//	case WM_PAINT: {
+//		//验证窗口是否有效
+//		hdc = BeginPaint(hwnd, &ps);
+//		//绘制代码
+//		EndPaint(hwnd, &ps);
+//		//成功返回
+//		return(0);
+//	}break;
+//
+//	case WM_KEYDOWN: {
+//		switch (wparam) {
+//		/*case 'S': {
+//			Vec3 moveDir = mainCamera.N;
+//			mainCamera.cameraPos -= moveDir * 0.1f;
+//			mainCamera.UpdateCamera();
+//			break;
+//		}
+//		case 'W': {
+//			Vec3 moveDir = mainCamera.N;
+//			mainCamera.cameraPos += moveDir * 0.1f;
+//			mainCamera.UpdateCamera();
+//			break;
+//		}
+//		case 'A': {
+//			Vec3 moveDir = mainCamera.U;
+//			mainCamera.cameraPos -= moveDir * 0.1f;
+//			mainCamera.UpdateCamera();
+//			break;
+//		}
+//		case 'D': {
+//			Vec3 moveDir = mainCamera.U;
+//			mainCamera.cameraPos += moveDir * 0.1f;
+//			mainCamera.UpdateCamera();
+//			break;
+//		}
+//		default: {
+//			break;
+//		}*/
+//
+//		}break;
+//	}
+//
+//
+//	case WM_DESTROY: {
+//		//关闭应用程序，这将返回一条WM_QUIT消息
+//		PostQuitMessage(0);
+//		//成功返回
+//		return(0);
+//	}break;
+//
+//	default: break;
+//
+//	}//end switch
+//
+//	//使用windows默认函数处理其他消息
+//	return (DefWindowProc(hwnd, msg, wparam, lparam));
+//}//end WinProc
 
 #endif

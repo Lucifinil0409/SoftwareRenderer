@@ -31,7 +31,7 @@ public:
 	Mat4x4 mPer;
 	Mat4x4 mScr;
 
-	Camera();
+	Camera(){}
 	Camera(Vec3 pos, Vec3 dir, float fov, float width, float height, float nearZ, float farZ) {
 		cameraPos = pos;
 		viewDirection = dir;
@@ -64,7 +64,22 @@ public:
 	~Camera(){}
 
 	void UpdateCamera() {
+		//计算相机观察方向
+		Vec3 viewTarget(0, 0, 0);
+		float r = cos(viewDirection.x / 180 * MY_PI);
+		viewTarget.x = r * sin(viewDirection.y / 180 * MY_PI);
+		viewTarget.y = sin(viewDirection.x / 180 * MY_PI);
+		viewTarget.x = r * cos(viewDirection.y / 180 * MY_PI);
 
+		//U,V,N
+		N = (viewTarget - cameraPos).normalize();
+		Vec3 up(0.0f, 1.0f, 0.0f);
+		U = cross(up, N).normalize();
+		V = cross(N, U);
+
+		//此时距离投影平面viewplane的距离d==1
+		halfViewplaneHeight = tan((cameraFov / 2) / 180 * MY_PI);
+		halfViewplaneWidth = halfViewplaneHeight * aspectRatio;
 	}
 
 	Mat4x4 calViewMatrix() {
